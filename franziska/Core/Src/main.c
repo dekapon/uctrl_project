@@ -19,10 +19,17 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "adc.h"
+#include "spi.h"
+#include "usart.h"
+#include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "poti.h"
+#include "stdio.h"
+#include "lcd_driver.h"
+#include "lcd_menu.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -48,7 +55,11 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
+int _write(int fd, char* ptr, int len); // redirecting uart to printf for convenience
+void displayWelcome();
 
+uint16_t rawValue;
+HAL_StatusTypeDef status;
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -83,14 +94,38 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  MX_ADC1_Init();
+  MX_USART2_UART_Init();
+  MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
-
+  lcd_init();
+  lcd_clear();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
+  displayWelcome();
+
   while (1)
   {
+
+		// CHANNEL 0
+		status = potiRead(&rawValue);
+
+		//menu1_display();
+
+		if(status == HAL_OK)
+			potiPrint(&rawValue);
+		else
+			Error_Handler();
+
+		// when button is pressed:
+		// status = potiDeInit();
+		// if(status != HAL_OK)
+		// Error_Hanlder();
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -138,7 +173,24 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+int _write(int fd, char* ptr, int len)
+{
+	if(HAL_UART_Transmit(&huart2, (uint8_t *)ptr, len, HAL_MAX_DELAY)== HAL_OK)
+		return len;
+	else
+		return -1;
+}
 
+// NOTE: Carriage return "\r" helps for nice console output
+void displayWelcome()
+{
+	puts("******** TRAINING 8_2 ******** \r\n");
+	puts("- Uart connection ... Done\r\n");
+	puts("- printf retargeting to uart ... Done\r\n");
+	puts("- Reading Poti 0 and 1 ... Done\r\n");
+	puts("- Dim LED with Poti 0 ... Done\r\n");
+	puts("***************************** \r\n");
+}
 /* USER CODE END 4 */
 
 /**
