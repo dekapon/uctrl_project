@@ -60,6 +60,7 @@ void displayWelcome();
 
 uint16_t rawValue;
 HAL_StatusTypeDef status;
+int step = 0;
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -106,25 +107,24 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
-  displayWelcome();
+  //displayWelcome();
+  welcome_display();
 
   while (1)
   {
-
-		// CHANNEL 0
 		status = potiRead(&rawValue);
 
-		//menu1_display();
-
-		if(status == HAL_OK)
-			potiPrint(&rawValue);
+		if(status == HAL_OK){
+			if(step == 0)
+				menu1_display();
+			else if(step == 1)
+				potiPrint(&rawValue);
+			else if(step == 2){
+				status = potiDeInit();
+				menu2_display(&rawValue);
+		}
 		else
 			Error_Handler();
-
-		// when button is pressed:
-		// status = potiDeInit();
-		// if(status != HAL_OK)
-		// Error_Hanlder();
 
     /* USER CODE END WHILE */
 
@@ -173,6 +173,12 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	if(GPIO_Pin == GPIO_PIN_5) // Check pin
+		step ++;
+}
+
 int _write(int fd, char* ptr, int len)
 {
 	if(HAL_UART_Transmit(&huart2, (uint8_t *)ptr, len, HAL_MAX_DELAY)== HAL_OK)

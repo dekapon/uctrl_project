@@ -1,0 +1,3 @@
+lcd_menu.c:14:6:welcome_display	16	static
+lcd_menu.c:21:6:menu1_display	16	static
+lcd_menu.c:29:6:menu2_display	24	static

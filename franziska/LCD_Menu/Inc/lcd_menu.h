@@ -8,6 +8,8 @@
 #ifndef INC_LCD_MENU_H_
 #define INC_LCD_MENU_H_
 
-//void menu1_display(void);
+void welcome_display(void);
+void menu1_display(void);
+void menu2_display(uint16_t* value);
 
 #endif /* INC_LCD_MENU_H_ */
