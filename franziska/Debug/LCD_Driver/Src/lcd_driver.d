@@ -29,6 +29,8 @@ LCD_Driver/Src/lcd_driver.o: ../LCD_Driver/Src/lcd_driver.c \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h \
+ ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
+ ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
  C:/Users/franz/OneDrive/Desktop/BME/Semester\ 3/Programming\ of\ Microcontrollers/uctrl_project/franziska/LCD_Driver/Inc/lcd_symbols.h \
  C:/Users/franz/OneDrive/Desktop/BME/Semester\ 3/Programming\ of\ Microcontrollers/uctrl_project/franziska/LCD_Driver/Inc/lcd_font6x8.h \
@@ -94,6 +96,10 @@ C:/Users/franz/OneDrive/Desktop/BME/Semester\ 3/Programming\ of\ Microcontroller
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h:
 
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h:
+
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h:
+
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
 
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
 
