@@ -10,6 +10,8 @@
 
 void welcome_display(void);
 void menu1_display(void);
-void menu2_display(uint16_t* value);
+void menu2_display(void);
+void menu3_display(void);
+void menu4_display(uint16_t* value);
 
 #endif /* INC_LCD_MENU_H_ */

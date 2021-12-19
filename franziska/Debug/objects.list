@@ -33,3 +33,4 @@
 "./LCD_Driver/Src/lcd_driver.o"
 "./LCD_Menu/Src/lcd_menu.o"
 "./Potentiometer/Src/poti.o"
+"./Scale/Src/scale.o"

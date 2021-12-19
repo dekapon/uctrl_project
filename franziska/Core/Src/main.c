@@ -121,10 +121,16 @@ int main(void)
 			if(step == 0)
 				menu1_display();
 			else if(step == 1)
+				menu2_display();
+			else if (step == 2)
+				getWeight();
+			else if(step == 3)
+				menu3_display();
+			else if(step == 4)
 				potiPrint(&rawValue);
-			else if(step == 2){
+			else if(step == 5){
 				status = potiDeInit();
-				menu2_display(&rawValue);
+				menu4_display(&rawValue);
 			}
 		}
 		else

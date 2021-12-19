@@ -25,8 +25,20 @@ void menu1_display(void){
 	lcd_show();
 }
 
+void menu2_display(void){
+	lcd_clear();
+	lcd_setString(4, 4, "Place the glass", LCD_FONT_8, false);
+	lcd_setString(4, 16, "on the scale", LCD_FONT_8, false);
+	lcd_show();
+}
 
-void menu2_display(uint16_t* value){
+void menu3_display(void){
+	lcd_clear();
+	lcd_setString(4, 4, "Chosen glass: small/big", LCD_FONT_8, false);
+	lcd_show();
+}
+
+void menu4_display(uint16_t* value){
 	lcd_clear();
 	sprintf(msgBuf1,"%i%% sirup chosen", ((int)*value/200)+5); 	// fill message buffer
 	lcd_setString(4, 1, msgBuf1, LCD_FONT_8, false); 		// LCD message

@@ -9,6 +9,7 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include Scale/Src/subdir.mk
 -include Potentiometer/Src/subdir.mk
 -include LCD_Menu/Src/subdir.mk
 -include LCD_Driver/Src/subdir.mk
