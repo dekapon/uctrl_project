@@ -103,7 +103,6 @@ int main(void)
   MX_USART2_UART_Init();
   MX_SPI1_Init();
   MX_TIM1_Init();
-  MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
   lcd_init();
   lcd_clear();
@@ -180,8 +179,14 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+	if(GPIO_Pin == GPIO_PIN_5)
+		step ++;
+}
+
+/*
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	if(GPIO_Pin == GPIO_PIN_5 && button_state == true){
-		HAL_TIM_Base_Start_IT(&htim6);
+		HAL_TIM_Base_Start_IT(&htim1);
 		button_state = false;
 	}
 	else{
@@ -190,14 +195,15 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 }
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
-	  UNUSED(htim);																				// To prevent unused arguments compilation warning
-		if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == GPIO_PIN_RESET){
-			step ++;
-			button_state = true;
-			HAL_TIM_Base_Stop_IT(&htim6);
-		}
+	UNUSED(htim); // To prevent unused arguments compilation warning
 
-}
+	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == GPIO_PIN_RESET){
+		step ++;
+		button_state = true;
+		HAL_TIM_Base_Stop_IT(&htim1);
+	}
+
+}*/
 
 int _write(int fd, char* ptr, int len){
 	if(HAL_UART_Transmit(&huart2, (uint8_t *)ptr, len, HAL_MAX_DELAY)== HAL_OK)
