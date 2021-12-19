@@ -6,3 +6,7 @@ meindi/.cproject
 meindi/.mxproject
 
 meindi/.project
+
+meindi/Debug/
+
+meindi/project_meindi Debug.launch

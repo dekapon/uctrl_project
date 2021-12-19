@@ -20,6 +20,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "tim.h"
+#include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -44,7 +45,8 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+char receivedMessage;
+char messageToSend;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -87,17 +89,40 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_TIM6_Init();
   MX_GPIO_Init();
+  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim6);
+  void sendMessage(char *messageToSend){
+  	  //char messageToSend[] = "Hello World!\r\n";
+  	  //messageToSend = 'h';
+  	  //HAL_UART_Transmit(&huart2, &messageToSend, 1, HAL_MAX_DELAY);
+	  char * messageEnding = "hello\r\n";
+	  int length1 = strlen(messageToSend);
+	  int length2 = strlen(messageEnding);
+	  int messageLen = strlen(messageToSend) + strlen(messageEnding);
+	  char * message = malloc(messageLen);
+	  strcpy(message, messageToSend);
+	  strcat(message, messageEnding);
+  	  HAL_UART_Transmit(&huart2, (uint8_t*)message, messageLen, HAL_MAX_DELAY);
+  	  // need to free malloc !
+  }
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  HAL_UART_Receive(&huart2, &receivedMessage, 1, HAL_MAX_DELAY);
+	  if(receivedMessage == 'd'){
+		  HAL_GPIO_TogglePin(LED_GPIO_Port , LED_Pin);
+		  /*char message[] = "Yo!\r\n";
+		  sendMessage(message);*/
+		  		  sendMessage("Yo!");
+	  }
   }
   /* USER CODE END 3 */
 }
@@ -143,8 +168,9 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
-	if(htim ->Instance == TIM6)
-		HAL_GPIO_TogglePin(LED_GPIO_Port , LED_Pin);
+	if(htim ->Instance == TIM6){
+		//HAL_GPIO_TogglePin(LED_GPIO_Port , LED_Pin);
+	}
 }
 /* USER CODE END 4 */
 
