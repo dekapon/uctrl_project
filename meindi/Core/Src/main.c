@@ -22,6 +22,8 @@
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
+#include <stdlib.h>
+#include <string.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -96,14 +98,13 @@ int main(void)
   	  //char messageToSend[] = "Hello World!\r\n";
   	  //messageToSend = 'h';
   	  //HAL_UART_Transmit(&huart2, &messageToSend, 1, HAL_MAX_DELAY);
-	  char * messageEnding = "hello\r\n";
-	  int length1 = strlen(messageToSend);
-	  int length2 = strlen(messageEnding);
+	  char * messageEnding = "\r\n";
 	  int messageLen = strlen(messageToSend) + strlen(messageEnding);
 	  char * message = malloc(messageLen);
 	  strcpy(message, messageToSend);
 	  strcat(message, messageEnding);
   	  HAL_UART_Transmit(&huart2, (uint8_t*)message, messageLen, HAL_MAX_DELAY);
+  	  free(message);
   	  // need to free malloc !
   }
   /* USER CODE END 2 */
