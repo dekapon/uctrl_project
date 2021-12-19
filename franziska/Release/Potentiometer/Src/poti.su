@@ -1,0 +1,4 @@
+poti.c:16:19:potiInit	0	static
+poti.c:21:19:potiRead	16	static
+poti.c:33:6:potiPrint	24	static
+poti.c:132:19:potiDeInit	0	static

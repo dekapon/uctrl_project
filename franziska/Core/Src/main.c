@@ -21,6 +21,7 @@
 #include "main.h"
 #include "adc.h"
 #include "spi.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -61,6 +62,7 @@ void displayWelcome();
 uint16_t rawValue;
 HAL_StatusTypeDef status;
 int step = 0;
+bool button_state = true;
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -99,6 +101,7 @@ int main(void)
   MX_ADC1_Init();
   MX_USART2_UART_Init();
   MX_SPI1_Init();
+  MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
   lcd_init();
   lcd_clear();
@@ -122,6 +125,7 @@ int main(void)
 			else if(step == 2){
 				status = potiDeInit();
 				menu2_display(&rawValue);
+			}
 		}
 		else
 			Error_Handler();
@@ -175,9 +179,26 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-	if(GPIO_Pin == GPIO_PIN_5) // Check pin
-		step ++;
+	if(GPIO_Pin == joystick_Pin && button_state == true){ // Check pin
+		HAL_TIM_Base_Start_IT(&htim1);
+		button_state = false;
+	}
+	else{
+		__NOP();
+	}
 }
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+	UNUSED(htim);		// Prevent unused argument(s) compilation warning
+
+	if(HAL_GPIO_ReadPin(joystick_GPIO_Port, joystick_Pin) == GPIO_PIN_RESET){
+		step ++;
+		button_state = true;
+		HAL_TIM_Base_Stop_IT(&htim1);
+	}
+}
+
 
 int _write(int fd, char* ptr, int len)
 {
