@@ -21,7 +21,6 @@ HAL_StatusTypeDef potiInit(void){
 HAL_StatusTypeDef potiRead(uint16_t* value){
 	if(potiInit() == HAL_OK){
 		*value = HAL_ADC_GetValue(&hadc1);
-		//*value = *value/200;
 		return HAL_OK;
 	}
 	else
@@ -125,8 +124,6 @@ void potiPrint(uint16_t* value){
 		break;
 	}
 	lcd_show();
-
-	//printf("\rPot0: %4d", (int)*value/200);
 }
 
 HAL_StatusTypeDef potiDeInit()

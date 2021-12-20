@@ -64,10 +64,8 @@ uint16_t rawValue;
 HAL_StatusTypeDef status;
 int step = 0;
 bool button_state = true;
-hx711_t loadcell;
+int weight;
 
-char msgBuf[30];
-float weight;
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
