@@ -244,7 +244,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 		HAL_UART_Receive(&huart4, &receivedMessage, 1, HAL_MAX_DELAY);
-		HAL_UART_Receive(&huart2, &receivedMessage, 1, HAL_MAX_DELAY);
+		//HAL_UART_Receive(&huart2, &receivedMessage, 1, HAL_MAX_DELAY);
 		decodeMessage(receivedMessage);
 		if(receivedMessage == 'd'){
 			HAL_GPIO_TogglePin(LED_GPIO_Port , LED_Pin);
