@@ -13,5 +13,6 @@ void menu1_display(void);
 void menu2_display(void);
 char menu3_display(int weight);
 void menu4_display(int value);
+void menu5_display(void);
 
 #endif /* INC_LCD_MENU_H_ */

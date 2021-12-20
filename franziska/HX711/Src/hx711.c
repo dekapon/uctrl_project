@@ -128,7 +128,6 @@ void hx711_calibration(hx711_t *hx711, int32_t noload_raw, int32_t load_raw, flo
 }
 //#############################################################################################
 
-char msgBuf[30];
 float hx711_weight(hx711_t *hx711, uint16_t sample)
 {
   hx711_lock(hx711);
@@ -142,8 +141,6 @@ float hx711_weight(hx711_t *hx711, uint16_t sample)
   float answer =  (data - hx711->offset) / hx711->coef;
   answer = (answer - 2333.4)*(-1);
   answer = answer/3.29;
-  sprintf(msgBuf,"Weight: %i \n\r", data); // fill message buffer
-  puts(msgBuf);
   hx711_unlock(hx711);
   return answer;
 }

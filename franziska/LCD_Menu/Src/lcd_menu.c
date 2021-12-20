@@ -10,7 +10,7 @@
 #include "main.h"
 
 char msgBuf1[30];
-char glass[10];
+char glass[30];
 char size;
 
 void welcome_display(void){
@@ -37,16 +37,15 @@ void menu2_display(void){
 // which glass has been chosen
 char menu3_display(int weight){
 	if (weight > 190){
-		sprintf(glass, "Big");
+		sprintf(glass, "Big glass chosen");
 		size = 1;
 	}
 	else{
-		sprintf(glass, "Small");
+		sprintf(glass, "Small glass chosen");
 		size = 0;
 	}
 	lcd_clear();
-	lcd_setString(4, 4, "Glass chosen:", LCD_FONT_8, false);
-	lcd_setString(4, 16, glass, LCD_FONT_8, false);
+	lcd_setString(4, 4, glass, LCD_FONT_8, false);
 	lcd_show();
 	return size;
 }
@@ -59,3 +58,8 @@ void menu4_display(int value){
 	lcd_show();
 }
 
+void menu5_display(void){
+	lcd_clear();
+	lcd_setString(4, 4, "Cheers!", LCD_FONT_8, false);
+	lcd_show();
+}

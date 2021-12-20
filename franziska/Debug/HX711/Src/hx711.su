@@ -6,8 +6,8 @@ hx711.c:67:9:hx711_value	32	static
 hx711.c:95:9:hx711_value_ave	40	static
 hx711.c:109:6:hx711_tare	40	static
 hx711.c:122:6:hx711_calibration	24	static
-hx711.c:132:7:hx711_weight	48	static
-hx711.c:151:6:hx711_coef_set	16	static
-hx711.c:156:7:hx711_coef_get	16	static
-hx711.c:161:6:hx711_power_down	16	static
-hx711.c:168:6:hx711_power_up	16	static
+hx711.c:131:7:hx711_weight	48	static
+hx711.c:148:6:hx711_coef_set	16	static
+hx711.c:153:7:hx711_coef_get	16	static
+hx711.c:158:6:hx711_power_down	16	static
+hx711.c:165:6:hx711_power_up	16	static

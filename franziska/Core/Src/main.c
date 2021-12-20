@@ -32,6 +32,8 @@
 #include "lcd_driver.h"
 #include "lcd_menu.h"
 #include "hx711.h"
+#include "comm.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -108,6 +110,7 @@ int main(void)
   MX_USART2_UART_Init();
   MX_SPI1_Init();
   MX_TIM1_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   lcd_init();
   lcd_clear();
@@ -117,6 +120,9 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  sendMessage("l");
+  HAL_Delay(1000);
+  sendMessage("l");
   while (1)
   {
 		status = potiRead(&rawValue);
@@ -137,15 +143,35 @@ int main(void)
 				menu4_display(percentage);
 			}
 			else if(step == 6){
-				// send start signal to meindi;
+				sendMessage("b"); // move the glass to next position
+				HAL_Delay(2500);
+				sendMessage("t"); // open valve for syrup
 				step ++;
 			}
 			else if(step == 7){
 				weight = getWeight2();
 				isFull = checkWeight(size, weight, percentage);
-				if(isFull)
-					puts("******** Testing ******** \r\n");
-					// send stop signal to meindi;
+				if(isFull){
+					sendMessage("z"); // close valve for syrup
+					HAL_Delay(10);
+					sendMessage("b"); // move the glass to next position
+					HAL_Delay(2500);
+					sendMessage("g"); // open valve for water
+					step ++;
+				}
+			}
+			else if(step == 8){
+				weight = getWeight2();
+				isFull = checkWeight2(size, weight, percentage);
+				if(isFull){
+					sendMessage("h"); // close valve for water
+					HAL_Delay(10);
+					sendMessage("m"); // move glass back
+					step ++;
+				}
+			}
+			else if(step > 8){
+				menu5_display();
 			}
 		}
 		else
