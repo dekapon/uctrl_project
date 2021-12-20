@@ -1,2 +1,4 @@
-scale.c:26:6:initScale	16	static
-scale.c:32:5:getWeight	16	static
+scale.c:29:6:initScale	16	static
+scale.c:35:5:getWeight	16	static
+scale.c:46:5:getWeight2	16	static
+scale.c:56:5:checkWeight	24	static

@@ -66,6 +66,8 @@ int step = 0;
 bool button_state = true;
 int percentage;
 int weight;
+char size;
+int isFull;
 
 /* USER CODE END PFP */
 
@@ -127,12 +129,23 @@ int main(void)
 			else if (step == 2)
 				weight = getWeight();
 			else if(step == 3)
-				menu3_display(weight);
+				size = menu3_display(weight);
 			else if(step == 4)
 				percentage = potiPrint(&rawValue);
 			else if(step == 5){
 				status = potiDeInit();
 				menu4_display(percentage);
+			}
+			else if(step == 6){
+				// send start signal to meindi;
+				step ++;
+			}
+			else if(step == 7){
+				weight = getWeight2();
+				isFull = checkWeight(size, weight, percentage);
+				if(isFull)
+					puts("******** Testing ******** \r\n");
+					// send stop signal to meindi;
 			}
 		}
 		else

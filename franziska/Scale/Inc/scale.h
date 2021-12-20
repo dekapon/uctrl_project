@@ -12,6 +12,8 @@
 
 void initScale(void);
 int getWeight(void);
+int getWeight2(void);
+int checkWeight(char size, int weight, int percentage);
 
 
 #endif /* INC_SCALE_H_ */

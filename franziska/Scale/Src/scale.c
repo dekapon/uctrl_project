@@ -21,6 +21,9 @@
 char msgBuf[30];
 float weight;
 hx711_t loadcell;
+int volume_small = 2000;
+int volume_big = 5000;
+int volume;
 
 
 void initScale(void){
@@ -38,6 +41,28 @@ int getWeight(void){
 	lcd_setString(4, 16, "Press js to continue", LCD_FONT_8, false);
 	lcd_show();
 	return (int)weight;
+}
+
+int getWeight2(void){
+	HAL_Delay(500);
+	weight = hx711_weight(&loadcell, 10);
+	sprintf(msgBuf,"Weight: %dg", (int)weight); // fill message buffer
+	lcd_clear();
+	lcd_setString(4, 1, msgBuf, LCD_FONT_8, false); 		// LCD message
+	lcd_show();
+	return (int)weight;
+}
+
+int checkWeight(char size, int weight, int percentage){
+	if (size == 0){
+		volume = volume_small;
+	}
+	else{
+		volume = volume_big;
+	}
+	if (weight > volume*percentage/100)
+		return 1;
+	return 0;
 }
 
 #endif /* SCALE_C_ */
