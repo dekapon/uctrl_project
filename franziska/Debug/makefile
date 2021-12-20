@@ -13,6 +13,7 @@ RM := rm -rf
 -include Potentiometer/Src/subdir.mk
 -include LCD_Menu/Src/subdir.mk
 -include LCD_Driver/Src/subdir.mk
+-include HX711/Src/subdir.mk
 -include Drivers/STM32F4xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk

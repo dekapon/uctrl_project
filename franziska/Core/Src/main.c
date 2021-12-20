@@ -31,6 +31,7 @@
 #include "stdio.h"
 #include "lcd_driver.h"
 #include "lcd_menu.h"
+#include "hx711.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -63,6 +64,10 @@ uint16_t rawValue;
 HAL_StatusTypeDef status;
 int step = 0;
 bool button_state = true;
+hx711_t loadcell;
+
+char msgBuf[30];
+float weight;
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -112,6 +117,10 @@ int main(void)
 
   //displayWelcome();
   welcome_display();
+  //initScale(&loadcell);
+  hx711_init(&loadcell, HX711_CLK_GPIO_Port, HX711_CLK_Pin, HX711_DATA_GPIO_Port, HX711_DATA_Pin);
+  hx711_coef_set(&loadcell, 354.5); 						// read afer calibration
+  hx711_tare(&loadcell, 10);
 
   while (1)
   {
@@ -122,8 +131,13 @@ int main(void)
 				menu1_display();
 			else if(step == 1)
 				menu2_display();
-			else if (step == 2)
-				getWeight();
+			else if (step == 2){
+				HAL_Delay(500);
+				weight = hx711_weight(&loadcell, 10);
+				sprintf(msgBuf,"weight: %f g \r\n", weight); // fill message buffer
+				puts(msgBuf); // Uart message
+				//getWeight(loadcell);
+			}
 			else if(step == 3)
 				menu3_display();
 			else if(step == 4)
@@ -214,16 +228,15 @@ int _write(int fd, char* ptr, int len)
 		return -1;
 }
 
-// NOTE: Carriage return "\r" helps for nice console output
+/*
 void displayWelcome()
 {
-	puts("******** TRAINING 8_2 ******** \r\n");
-	puts("- Uart connection ... Done\r\n");
-	puts("- printf retargeting to uart ... Done\r\n");
-	puts("- Reading Poti 0 and 1 ... Done\r\n");
-	puts("- Dim LED with Poti 0 ... Done\r\n");
+	puts("******** Testing ******** \r\n");
+
 	puts("***************************** \r\n");
 }
+*/
+
 /* USER CODE END 4 */
 
 /**

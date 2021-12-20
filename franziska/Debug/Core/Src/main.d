@@ -36,7 +36,8 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  C:/Users/franz/OneDrive/Desktop/BME/Semester\ 3/Programming\ of\ Microcontrollers/uctrl_project/franziska/Potentiometer/Inc/poti.h \
  C:/Users/franz/OneDrive/Desktop/BME/Semester\ 3/Programming\ of\ Microcontrollers/uctrl_project/franziska/LCD_Driver/Inc/lcd_driver.h \
  C:/Users/franz/OneDrive/Desktop/BME/Semester\ 3/Programming\ of\ Microcontrollers/uctrl_project/franziska/LCD_Driver/Inc/lcd_menu.h \
- C:/Users/franz/OneDrive/Desktop/BME/Semester\ 3/Programming\ of\ Microcontrollers/uctrl_project/franziska/LCD_Driver/Inc/lcd_driver.h
+ C:/Users/franz/OneDrive/Desktop/BME/Semester\ 3/Programming\ of\ Microcontrollers/uctrl_project/franziska/LCD_Driver/Inc/lcd_driver.h \
+ C:/Users/franz/OneDrive/Desktop/BME/Semester\ 3/Programming\ of\ Microcontrollers/uctrl_project/franziska/HX711/Inc/hx711.h
 
 ../Core/Inc/main.h:
 
@@ -123,3 +124,5 @@ C:/Users/franz/OneDrive/Desktop/BME/Semester\ 3/Programming\ of\ Microcontroller
 C:/Users/franz/OneDrive/Desktop/BME/Semester\ 3/Programming\ of\ Microcontrollers/uctrl_project/franziska/LCD_Driver/Inc/lcd_menu.h:
 
 C:/Users/franz/OneDrive/Desktop/BME/Semester\ 3/Programming\ of\ Microcontrollers/uctrl_project/franziska/LCD_Driver/Inc/lcd_driver.h:
+
+C:/Users/franz/OneDrive/Desktop/BME/Semester\ 3/Programming\ of\ Microcontrollers/uctrl_project/franziska/HX711/Inc/hx711.h:

@@ -67,6 +67,10 @@ void Error_Handler(void);
 #define joystick_EXTI_IRQn EXTI9_5_IRQn
 #define LCD_CS_N_Pin GPIO_PIN_6
 #define LCD_CS_N_GPIO_Port GPIOB
+#define HX711_CLK_Pin GPIO_PIN_8
+#define HX711_CLK_GPIO_Port GPIOB
+#define HX711_DATA_Pin GPIO_PIN_9
+#define HX711_DATA_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

@@ -30,6 +30,7 @@
 "./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.o"
 "./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o"
 "./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.o"
+"./HX711/Src/hx711.o"
 "./LCD_Driver/Src/lcd_driver.o"
 "./LCD_Menu/Src/lcd_menu.o"
 "./Potentiometer/Src/poti.o"
