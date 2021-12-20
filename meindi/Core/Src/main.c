@@ -1,29 +1,28 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : Main program body
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file           : main.c
+ * @brief          : Main program body
+ ******************************************************************************
+ * @attention
+ *
+ * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+ * All rights reserved.</center></h2>
+ *
+ * This software component is licensed by ST under BSD 3-Clause license,
+ * the "License"; You may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at:
+ *                        opensource.org/licenses/BSD-3-Clause
+ *
+ ******************************************************************************
+ */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
-#include <stdlib.h>
-#include <string.h>
+#include <stdbool.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -47,8 +46,129 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+enum Speed {Slow = 1999, Medium = 299, Fast = 139};
+bool isHoming = false;
+bool isEndstopTriggered = false;
+void startTimer(){
+	HAL_TIM_OC_Start(&htim2, TIM_CHANNEL_3);
+}
+
+void stopTimer(){
+	HAL_TIM_OC_Stop(&htim2, TIM_CHANNEL_3);
+}
+
 char receivedMessage;
 char messageToSend;
+
+void sendMessage(char *messageToSend){
+	char * messageEnding = "\r\n";
+	int messageLen = strlen(messageToSend) + strlen(messageEnding);
+	char * message = malloc(messageLen);
+	strcpy(message, messageToSend);
+	strcat(message, messageEnding);
+	HAL_UART_Transmit(&huart2, (uint8_t*)message, messageLen, HAL_MAX_DELAY);
+	free(message);
+}
+void turnmot(int per){
+	/*for (int i = 1; i < 2000; ++i)
+	  {
+		HAL_GPIO_TogglePin(motStep_GPIO_Port, motStep_Pin);
+		HAL_Delay(2);
+	  }*/
+	startTimer();
+	TIM2->PSC = per;
+	HAL_Delay(2000);
+	stopTimer();
+}
+
+void goHome(){
+	HAL_GPIO_WritePin(motDir_GPIO_Port, motDir_Pin, 1);
+	startTimer();
+	//HAL_GPIO_WritePin(eV1_GPIO_Port, eV1_Pin, 1);
+	TIM2->PSC = Medium;
+	while(isEndstopTriggered != true){
+	}
+	sendMessage("triggered !");
+	HAL_GPIO_WritePin(motDir_GPIO_Port, motDir_Pin, 0);
+	TIM2->PSC = Slow;
+	HAL_Delay(500);
+	stopTimer();
+	sendMessage("done !");
+	//HAL_GPIO_WritePin(eV1_GPIO_Port, eV1_Pin, 0);
+}
+
+void smoothTurn(int pres){
+	startTimer();
+	int max = 200000;
+	double percent;
+	/*for (int i = 1; i < max; ++i)
+	{
+		percent = (double)i / (double)max;
+		if (percent*(double)100 > 20){
+			TIM2->PSC = (int)(percent * (double)pres);
+		}
+
+	}*/
+	for (int i = 1; i < max; ++i)
+		{
+			percent = (double)i / (double)max;
+			if (percent*(double)100 > 20){
+				TIM2->PSC = (int)(percent * (double)pres);
+			}
+
+		}
+	//HAL_Delay(2000);
+	stopTimer();
+}
+void decodeMessage(char key){
+	switch(key){
+	case 't':
+		HAL_GPIO_WritePin(eV1_GPIO_Port, eV1_Pin, 1);
+		sendMessage("Electrovalve 1 ON!");
+		break;
+	case 'z':
+		HAL_GPIO_WritePin(eV1_GPIO_Port, eV1_Pin, 0);
+		sendMessage("Electrovalve 1 OFF!");
+		break;
+	case 'g':
+		HAL_GPIO_WritePin(eV2_GPIO_Port, eV2_Pin, 1);
+		sendMessage("Electrovalve 2 ON!");
+		break;
+	case 'h':
+		HAL_GPIO_WritePin(eV2_GPIO_Port, eV2_Pin, 0);
+		sendMessage("Electrovalve 2 OFF!");
+		break;
+	case 'b':
+		HAL_GPIO_WritePin(motStep_GPIO_Port, motStep_Pin, 1);
+		sendMessage("Motor step ON!");
+		//turnmot(1999); // 1999 = 40 Hz, 199 = 394khz
+		//turnmot(1999); // slow
+		//turnmot(499); // 1kHz
+		//turnmot(899); // 553 Hz
+		//turnmot(299); // 1.66 kHz // moderate speed
+		//turnmot(199); // 2.49 khZ
+		turnmot(Medium); // 10 kHz // fast
+		//smoothTurn(199);
+		break;
+	case 'n':
+		HAL_GPIO_WritePin(motStep_GPIO_Port, motStep_Pin, 0);
+		sendMessage("Motor step OFF!");
+		break;
+	case 'c':
+		HAL_GPIO_WritePin(motDir_GPIO_Port, motDir_Pin, 1);
+		sendMessage("Motor dir ON!");
+		break;
+	case 'v':
+		HAL_GPIO_WritePin(motDir_GPIO_Port, motDir_Pin, 0);
+		sendMessage("Motor dir OFF!");
+		break;
+	case 'l':
+			sendMessage("Homing !");
+			goHome();
+			break;
+
+	}
+}
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -92,39 +212,27 @@ int main(void)
   MX_TIM6_Init();
   MX_GPIO_Init();
   MX_USART2_UART_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-  HAL_TIM_Base_Start_IT(&htim6);
-  void sendMessage(char *messageToSend){
-  	  //char messageToSend[] = "Hello World!\r\n";
-  	  //messageToSend = 'h';
-  	  //HAL_UART_Transmit(&huart2, &messageToSend, 1, HAL_MAX_DELAY);
-	  char * messageEnding = "\r\n";
-	  int messageLen = strlen(messageToSend) + strlen(messageEnding);
-	  char * message = malloc(messageLen);
-	  strcpy(message, messageToSend);
-	  strcat(message, messageEnding);
-  	  HAL_UART_Transmit(&huart2, (uint8_t*)message, messageLen, HAL_MAX_DELAY);
-  	  free(message);
-  	  // need to free malloc !
-  }
+	HAL_TIM_Base_Start_IT(&htim6);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
-  while (1)
-  {
+	while (1)
+	{
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  HAL_UART_Receive(&huart2, &receivedMessage, 1, HAL_MAX_DELAY);
-	  if(receivedMessage == 'd'){
-		  HAL_GPIO_TogglePin(LED_GPIO_Port , LED_Pin);
-		  /*char message[] = "Yo!\r\n";
-		  sendMessage(message);*/
-		  		  sendMessage("Yo!");
-	  }
-  }
+		HAL_UART_Receive(&huart2, &receivedMessage, 1, HAL_MAX_DELAY);
+		decodeMessage(receivedMessage);
+		if(receivedMessage == 'd'){
+			HAL_GPIO_TogglePin(LED_GPIO_Port , LED_Pin);
+			sendMessage("Yo!");
+		}
+	}
   /* USER CODE END 3 */
 }
 
@@ -173,6 +281,17 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 		//HAL_GPIO_TogglePin(LED_GPIO_Port , LED_Pin);
 	}
 }
+
+// endstop callback
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	if(GPIO_Pin == endstop_Pin){ // Check pin
+		isEndstopTriggered = true;
+	}
+	else{
+		__NOP();
+	}
+}
 /* USER CODE END 4 */
 
 /**
@@ -182,11 +301,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
-  __disable_irq();
-  while (1)
-  {
-  }
+	/* User can add his own implementation to report the HAL error return state */
+	__disable_irq();
+	while (1)
+	{
+	}
   /* USER CODE END Error_Handler_Debug */
 }
 
@@ -201,7 +320,7 @@ void Error_Handler(void)
 void assert_failed(uint8_t *file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
-  /* User can add his own implementation to report the file name and line number,
+	/* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 }

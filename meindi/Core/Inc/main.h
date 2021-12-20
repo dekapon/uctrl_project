@@ -60,6 +60,19 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define LED_Pin GPIO_PIN_5
 #define LED_GPIO_Port GPIOA
+#define motStep_Pin GPIO_PIN_6
+#define motStep_GPIO_Port GPIOA
+#define motDir_Pin GPIO_PIN_7
+#define motDir_GPIO_Port GPIOA
+#define motDirTimer_Pin GPIO_PIN_10
+#define motDirTimer_GPIO_Port GPIOB
+#define endstop_Pin GPIO_PIN_3
+#define endstop_GPIO_Port GPIOB
+#define endstop_EXTI_IRQn EXTI3_IRQn
+#define eV1_Pin GPIO_PIN_8
+#define eV1_GPIO_Port GPIOB
+#define eV2_Pin GPIO_PIN_9
+#define eV2_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
