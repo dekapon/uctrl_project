@@ -64,6 +64,7 @@ uint16_t rawValue;
 HAL_StatusTypeDef status;
 int step = 0;
 bool button_state = true;
+int percentage;
 int weight;
 
 /* USER CODE END PFP */
@@ -128,10 +129,10 @@ int main(void)
 			else if(step == 3)
 				menu3_display(weight);
 			else if(step == 4)
-				potiPrint(&rawValue);
+				percentage = potiPrint(&rawValue);
 			else if(step == 5){
 				status = potiDeInit();
-				menu4_display(&rawValue);
+				menu4_display(percentage);
 			}
 		}
 		else

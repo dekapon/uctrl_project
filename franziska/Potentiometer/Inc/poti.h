@@ -15,7 +15,7 @@ uint16_t rawValue;
 
 HAL_StatusTypeDef potiInit(void);
 HAL_StatusTypeDef potiRead(uint16_t* value);
-void potiPrint(uint16_t* value);
+int potiPrint(uint16_t* value);
 HAL_StatusTypeDef potiDeInit();
 
 #endif /* INC_MAIN_H_ */

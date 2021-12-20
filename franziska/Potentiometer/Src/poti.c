@@ -28,14 +28,16 @@ HAL_StatusTypeDef potiRead(uint16_t* value){
 }
 
 char msgBuf1[30]; 	// Prepare buffer for message
+int new_value;
 
-void potiPrint(uint16_t* value){
+int potiPrint(uint16_t* value){
 	lcd_clear();
 	lcd_setLine(12, 15, 12, 25, 1);
 	lcd_setLine(12, 15, 115, 15, 1);
 	lcd_setLine(12, 25, 116, 25, 1);
 	lcd_setLine(115, 15, 115, 25, 1);
-	switch((int)*value/200){
+	new_value = (int)*value/200;
+	switch(new_value){
 	case 0:
 		lcd_setString(4, 4, "Sirup percentage: 5%", LCD_FONT_8, false);
 		lcd_setBar(13, 16, 18, 24);
@@ -124,6 +126,7 @@ void potiPrint(uint16_t* value){
 		break;
 	}
 	lcd_show();
+	return new_value+5; // +5 since we start at 5 percent
 }
 
 HAL_StatusTypeDef potiDeInit()

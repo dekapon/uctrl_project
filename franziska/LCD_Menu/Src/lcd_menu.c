@@ -35,7 +35,7 @@ void menu2_display(void){
 
 // which glass has been chosen
 void menu3_display(int weight){
-	if (weight > 300)
+	if (weight > 190)
 		sprintf(glass, "Big");
 	else
 		sprintf(glass, "Small");
@@ -46,9 +46,9 @@ void menu3_display(int weight){
 }
 
 
-void menu4_display(uint16_t* value){
+void menu4_display(int value){
 	lcd_clear();
-	sprintf(msgBuf1,"%i%% sirup chosen", ((int)*value/200)+5); 	// fill message buffer
+	sprintf(msgBuf1,"%d%% sirup chosen", value); 			// fill message buffer
 	lcd_setString(4, 1, msgBuf1, LCD_FONT_8, false); 		// LCD message
 	lcd_show();
 }
