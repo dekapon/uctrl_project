@@ -19,10 +19,18 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "adc.h"
+#include "spi.h"
+#include "tim.h"
+#include "usart.h"
+#include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "poti.h"
+#include "stdio.h"
+#include "lcd_driver.h"
+#include "lcd_menu.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -48,6 +56,13 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
+int _write(int fd, char* ptr, int len); // redirecting uart to printf for convenience
+void displayWelcome();
+
+uint16_t rawValue;
+HAL_StatusTypeDef status;
+int step = 0;
+bool button_state = true;
 
 /* USER CODE END PFP */
 
@@ -83,14 +98,38 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  MX_ADC1_Init();
+  MX_USART2_UART_Init();
+  MX_SPI1_Init();
+  MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
-
+  lcd_init();
+  lcd_clear();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
+  //displayWelcome();
+  welcome_display();
+
   while (1)
   {
+		status = potiRead(&rawValue);
+
+		if(status == HAL_OK){
+			if(step == 0)
+				menu1_display();
+			if(step == 1)
+				potiPrint(&rawValue);
+			if(step == 2){
+				status = potiDeInit();
+				menu2_display(&rawValue);
+		}
+		else
+			Error_Handler();
+	}
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -139,6 +178,45 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+	if(GPIO_Pin == GPIO_PIN_5)
+		step ++;
+}
+
+/*
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+	if(GPIO_Pin == GPIO_PIN_5 && button_state == true){
+		HAL_TIM_Base_Start_IT(&htim1);
+		button_state = false;
+	}
+	else{
+		__NOP();
+	}
+}
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+	UNUSED(htim); // To prevent unused arguments compilation warning
+
+	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == GPIO_PIN_RESET){
+		step ++;
+		button_state = true;
+		HAL_TIM_Base_Stop_IT(&htim1);
+	}
+
+}*/
+
+int _write(int fd, char* ptr, int len){
+	if(HAL_UART_Transmit(&huart2, (uint8_t *)ptr, len, HAL_MAX_DELAY)== HAL_OK)
+		return len;
+	else
+		return -1;
+}
+
+void displayWelcome(){
+	puts("***************************** \r\n");
+	puts("********* DEBUGGING ********* \r\n");
+	puts("***************************** \r\n");
+}
 /* USER CODE END 4 */
 
 /**
