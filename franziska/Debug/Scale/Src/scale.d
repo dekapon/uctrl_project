@@ -33,7 +33,8 @@ Scale/Src/scale.o: ../Scale/Src/scale.c \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
- ../Core/Inc/gpio.h ../Core/Inc/main.h
+ ../Core/Inc/gpio.h ../Core/Inc/main.h \
+ C:/Users/franz/OneDrive/Desktop/BME/Semester\ 3/Programming\ of\ Microcontrollers/uctrl_project/franziska/LCD_Driver/Inc/lcd_driver.h
 
 C:/Users/franz/OneDrive/Desktop/BME/Semester\ 3/Programming\ of\ Microcontrollers/uctrl_project/franziska/Scale/Inc/scale.h:
 
@@ -108,3 +109,5 @@ C:/Users/franz/OneDrive/Desktop/BME/Semester\ 3/Programming\ of\ Microcontroller
 ../Core/Inc/gpio.h:
 
 ../Core/Inc/main.h:
+
+C:/Users/franz/OneDrive/Desktop/BME/Semester\ 3/Programming\ of\ Microcontrollers/uctrl_project/franziska/LCD_Driver/Inc/lcd_driver.h:

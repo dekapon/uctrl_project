@@ -9,9 +9,9 @@
 #define INC_SCALE_H_
 
 #include "hx711.h"
-/*
-hx711_t initScale(hx711_t loadcell);
-void getWeight(hx711_t);
-*/
+
+void initScale(void);
+int getWeight(void);
+
 
 #endif /* INC_SCALE_H_ */

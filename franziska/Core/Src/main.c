@@ -110,18 +110,12 @@ int main(void)
   /* USER CODE BEGIN 2 */
   lcd_init();
   lcd_clear();
+  initScale();
+  welcome_display();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-
-  //displayWelcome();
-  welcome_display();
-  //initScale(&loadcell);
-  hx711_init(&loadcell, HX711_CLK_GPIO_Port, HX711_CLK_Pin, HX711_DATA_GPIO_Port, HX711_DATA_Pin);
-  hx711_coef_set(&loadcell, 354.5); 						// read afer calibration
-  hx711_tare(&loadcell, 10);
-
   while (1)
   {
 		status = potiRead(&rawValue);
@@ -131,15 +125,10 @@ int main(void)
 				menu1_display();
 			else if(step == 1)
 				menu2_display();
-			else if (step == 2){
-				HAL_Delay(500);
-				weight = hx711_weight(&loadcell, 10);
-				sprintf(msgBuf,"weight: %f g \r\n", weight); // fill message buffer
-				puts(msgBuf); // Uart message
-				//getWeight(loadcell);
-			}
+			else if (step == 2)
+				weight = getWeight();
 			else if(step == 3)
-				menu3_display();
+				menu3_display(weight);
 			else if(step == 4)
 				potiPrint(&rawValue);
 			else if(step == 5){

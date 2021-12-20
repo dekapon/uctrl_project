@@ -1,0 +1,2 @@
+scale.c:26:6:initScale	16	static
+scale.c:32:5:getWeight	16	static
