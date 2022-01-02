@@ -1,0 +1,6 @@
+menu.c:20:6:welcome_display	16	static
+menu.c:27:6:menu1_display	16	static
+menu.c:34:6:menu2_display	16	static
+menu.c:42:6:menu3_display	24	static
+menu.c:58:6:menu4_display	24	static
+menu.c:65:6:menu5_display	16	static

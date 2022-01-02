@@ -2,6 +2,10 @@
  * hx711.c
  *
  *  Created on: Dec 19, 2021
+ *
+ *  Contains functions to use HX711 with a load cell of 1kg.
+ *
+ *  Copyright by Nima Askari, https://github.com/nimaltd/HX711/blob/master/hx711.c
  */
 
 #include "hx711.h"

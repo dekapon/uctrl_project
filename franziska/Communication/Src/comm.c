@@ -2,7 +2,10 @@
  * comm.c
  *
  *  Created on: Dec 20, 2021
- *      Author: franz
+ *      Author: Franziska Rothen
+ *
+ *  Contains a function to send a message to another microcontroller using UART.
+ *
  */
 
 

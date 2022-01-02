@@ -2,7 +2,7 @@
  * poti.h
  *
  *  Created on: Dec 4, 2021
- *      Author: Franziska
+ *      Author: Franziska Rothen
  */
 
 #ifndef INC_MAIN_H_

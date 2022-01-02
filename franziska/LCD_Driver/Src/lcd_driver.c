@@ -1,16 +1,15 @@
 /***************************************************************************************************
   * @file       NucleoF446RE_LCD.h
-	* @author     BFH-TI / wlm2
+  * @author     BFH-TI / wlm2
   * @author     BFH-TI / dnd1
-	* @author     BFH-TI / knm7
-  * @author     ?? original author has to be given as well !!
+  * @author     BFH-TI / knm7
   * @version    V0.4
-	* @date       30.09.2018
-	* @date       20.04.2018
-	* @date       25.11.2017
+  * @date       30.09.2018
+  * @date       20.04.2018
+  * @date       25.11.2017
   * @date       28.10.2015
   * @brief      Display setup and communication for LCD on mbed16-application-shield
-	* @brief      V0.4;dnd1;add;drawLine() function
+  * @brief      V0.4;dnd1;add;drawLine() function
   * @hardware   NucleoF446RE with mbed-016.1-application-shield
   **************************************************************************************************
   * @attention

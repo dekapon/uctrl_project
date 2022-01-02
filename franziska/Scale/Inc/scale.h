@@ -2,7 +2,7 @@
  * scale.h
  *
  *  Created on: Dec 18, 2021
- *      Author: Franziska
+ *      Author: Franziska Rothen
  */
 
 #ifndef INC_SCALE_H_

@@ -14,6 +14,17 @@
   * License. You may obtain a copy of the License at:
   *                        opensource.org/licenses/BSD-3-Clause
   *
+  *Author: Franziska Rothen, franziska.rothen@students.unibe.ch
+  *
+  *Functionalities:
+  * - Navigation through the menu via LCD and joystick
+  * - Detection of the size of the glass with a weighing scale
+  * - Choice of syrup percentage via potentiometer
+  * - Communication with the second microcontroller, giving orders to:
+  * 	- Initialize motor
+  * 	- Moving the glass to three predefined positions.
+  * 	- Open and close valves
+  *
   ******************************************************************************
   */
 /* USER CODE END Header */
@@ -27,11 +38,12 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "poti.h"
 #include "stdio.h"
-#include "lcd_driver.h"
-#include "lcd_menu.h"
 #include "hx711.h"
+#include "lcd_driver.h"
+#include "menu.h"
+#include "poti.h"
+#include "scale.h"
 #include "comm.h"
 
 /* USER CODE END Includes */
@@ -53,15 +65,6 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
-/* USER CODE END PV */
-
-/* Private function prototypes -----------------------------------------------*/
-void SystemClock_Config(void);
-/* USER CODE BEGIN PFP */
-int _write(int fd, char* ptr, int len); // redirecting uart to printf for convenience
-void displayWelcome();
-
 uint16_t rawValue;
 HAL_StatusTypeDef status;
 int step = 0;
@@ -70,6 +73,11 @@ int percentage;
 int weight;
 char size;
 int isFull;
+/* USER CODE END PV */
+
+/* Private function prototypes -----------------------------------------------*/
+void SystemClock_Config(void);
+/* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
 
@@ -112,66 +120,69 @@ int main(void)
   MX_TIM1_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  lcd_init();
-  lcd_clear();
-  initScale();
-  welcome_display();
+  lcd_init();													// initialize the lcd
+  initScale();													// initialize scale
+  sendMessage("l"); 											// initialize stepper motor
+  HAL_Delay(1000);
+  sendMessage("l");
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  sendMessage("l");
-  HAL_Delay(1000);
-  sendMessage("l");
-  while (1)
-  {
-		status = potiRead(&rawValue);
 
+  lcd_clear();													// clear lcd screen
+  welcome_display();											// display welcome message
+  status = HAL_OK;
+
+  while (1) 													// Menu navigaion with different menus and functions.
+  {
 		if(status == HAL_OK){
 			if(step == 0)
-				menu1_display();
+				menu1_display();								// display welcome message
 			else if(step == 1)
-				menu2_display();
+				menu2_display();								// prompt to put the glass on the scale
 			else if (step == 2)
-				weight = getWeight();
+				weight = getWeight();							// getting the weight
 			else if(step == 3)
-				size = menu3_display(weight);
-			else if(step == 4)
-				percentage = potiPrint(&rawValue);
+				size = menu3_display(weight);					// display which glass was chosen
+			else if(step == 4){
+				status = potiRead(&rawValue);					// initialize poti and start reading the value
+				percentage = potiPrint(&rawValue);				// print current chosen syrup percentage
+			}
 			else if(step == 5){
-				status = potiDeInit();
-				menu4_display(percentage);
+				status = potiDeInit();							// de-initialize the poti
+				menu4_display(percentage);						// display chosen percentage
 			}
 			else if(step == 6){
-				sendMessage("b"); // move the glass to next position
+				sendMessage("b"); 								// move the glass to next position
 				HAL_Delay(2500);
-				sendMessage("t"); // open valve for syrup
+				sendMessage("t"); 								// open valve for syrup
 				step ++;
 			}
 			else if(step == 7){
-				weight = getWeight2();
-				isFull = checkWeight(size, weight, percentage);
+				weight = getWeight2();							// geting the weight
+				isFull = checkWeight(size, weight, percentage);	// checking if the syrup has reached the desired level
 				if(isFull){
-					sendMessage("z"); // close valve for syrup
+					sendMessage("z"); 							// close valve for syrup
 					HAL_Delay(10);
-					sendMessage("b"); // move the glass to next position
+					sendMessage("b"); 							// move the glass to next position
 					HAL_Delay(2500);
-					sendMessage("g"); // open valve for water
+					sendMessage("g"); 							// open valve for water
 					step ++;
 				}
 			}
 			else if(step == 8){
-				weight = getWeight2();
-				isFull = checkWeight2(size, weight, percentage);
+				weight = getWeight2();							// getting the weight
+				isFull = checkWeight2(size, weight, percentage);// checking if the water has reached the desired level
 				if(isFull){
-					sendMessage("h"); // close valve for water
+					sendMessage("h"); 							// close valve for water
 					HAL_Delay(10);
-					sendMessage("m"); // move glass back
+					sendMessage("m"); 							// move glass back
 					step ++;
 				}
 			}
 			else if(step > 8){
-				menu5_display();
+				menu5_display();								// display final message
 			}
 		}
 		else
@@ -224,6 +235,9 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+// Increment step variable if joystick is pressed. With de-bouncing using TIM1 in interrupt mode.
+
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 	if(GPIO_Pin == joystick_Pin && button_state == true){ // Check pin
@@ -245,24 +259,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		HAL_TIM_Base_Stop_IT(&htim1);
 	}
 }
-
-
-int _write(int fd, char* ptr, int len)
-{
-	if(HAL_UART_Transmit(&huart2, (uint8_t *)ptr, len, HAL_MAX_DELAY)== HAL_OK)
-		return len;
-	else
-		return -1;
-}
-
-/*
-void displayWelcome()
-{
-	puts("******** Testing ******** \r\n");
-
-	puts("***************************** \r\n");
-}
-*/
 
 /* USER CODE END 4 */
 

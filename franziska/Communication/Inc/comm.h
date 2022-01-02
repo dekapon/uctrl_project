@@ -2,12 +2,12 @@
  * comm.h
  *
  *  Created on: Dec 20, 2021
- *      Author: franz
+ *      Author: Franziska Rothen
  */
 
 #ifndef INC_COMM_H_
 #define INC_COMM_H_
 
-char messageToSend;
+void sendMessage(char *messageToSend);
 
 #endif /* INC_COMM_H_ */

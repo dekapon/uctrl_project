@@ -2,7 +2,10 @@
  * poti.c
  *
  *  Created on: Dec 4, 2021
- *      Author: Franziska
+ *      Author: Franziska Rothen
+ *
+ * 	Contains functions to initialize, read and de-initialize the potentiometer.
+ *
  */
 
 #include "poti.h"

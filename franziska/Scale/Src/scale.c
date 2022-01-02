@@ -2,7 +2,10 @@
  * scale.h
  *
  *  Created on: Dec 18, 2021
- *      Author: Franziska
+ *      Author: Franziska Rothen
+ *
+ *  Contains functions to initialize the scale, measure the weight and compare it depending on the stage in the menu.
+ *
  */
 
 
