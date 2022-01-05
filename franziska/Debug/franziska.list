@@ -1350,14 +1350,14 @@ void sendMessage(char *messageToSend){
  8001054:	6979      	ldr	r1, [r7, #20]
  8001056:	68f8      	ldr	r0, [r7, #12]
  8001058:	f005 ffd4 	bl	8007004 <strcat>
-	HAL_UART_Transmit(&huart2, (uint8_t*)message, messageLen, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t*)message, messageLen, HAL_MAX_DELAY);	// communication with second microcontroller
  800105c:	693b      	ldr	r3, [r7, #16]
  800105e:	b29a      	uxth	r2, r3
  8001060:	f04f 33ff 	mov.w	r3, #4294967295
  8001064:	68f9      	ldr	r1, [r7, #12]
  8001066:	480a      	ldr	r0, [pc, #40]	; (8001090 <sendMessage+0x70>)
  8001068:	f003 fa97 	bl	800459a <HAL_UART_Transmit>
-	HAL_UART_Transmit(&huart1, (uint8_t*)message, messageLen, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart2, (uint8_t*)message, messageLen, HAL_MAX_DELAY);	// for debugging purposes
  800106c:	693b      	ldr	r3, [r7, #16]
  800106e:	b29a      	uxth	r2, r3
  8001070:	f04f 33ff 	mov.w	r3, #4294967295
@@ -1375,8 +1375,8 @@ void sendMessage(char *messageToSend){
  8001088:	bd90      	pop	{r4, r7, pc}
  800108a:	bf00      	nop
  800108c:	080092d8 	.word	0x080092d8
- 8001090:	20000558 	.word	0x20000558
- 8001094:	20000514 	.word	0x20000514
+ 8001090:	20000514 	.word	0x20000514
+ 8001094:	20000558 	.word	0x20000558
 
 08001098 <MX_ADC1_Init>:
 
@@ -3375,9 +3375,9 @@ void MX_USART1_UART_Init(void)
  8001b3a:	4b0b      	ldr	r3, [pc, #44]	; (8001b68 <MX_USART1_UART_Init+0x4c>)
  8001b3c:	2200      	movs	r2, #0
  8001b3e:	611a      	str	r2, [r3, #16]
-  huart1.Init.Mode = UART_MODE_TX_RX;
+  huart1.Init.Mode = UART_MODE_TX;
  8001b40:	4b09      	ldr	r3, [pc, #36]	; (8001b68 <MX_USART1_UART_Init+0x4c>)
- 8001b42:	220c      	movs	r2, #12
+ 8001b42:	2208      	movs	r2, #8
  8001b44:	615a      	str	r2, [r3, #20]
   huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
  8001b46:	4b08      	ldr	r3, [pc, #32]	; (8001b68 <MX_USART1_UART_Init+0x4c>)
@@ -3440,9 +3440,9 @@ void MX_USART2_UART_Init(void)
  8001b8e:	4b0b      	ldr	r3, [pc, #44]	; (8001bbc <MX_USART2_UART_Init+0x4c>)
  8001b90:	2200      	movs	r2, #0
  8001b92:	611a      	str	r2, [r3, #16]
-  huart2.Init.Mode = UART_MODE_TX_RX;
+  huart2.Init.Mode = UART_MODE_TX;
  8001b94:	4b09      	ldr	r3, [pc, #36]	; (8001bbc <MX_USART2_UART_Init+0x4c>)
- 8001b96:	220c      	movs	r2, #12
+ 8001b96:	2208      	movs	r2, #8
  8001b98:	615a      	str	r2, [r3, #20]
   huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
  8001b9a:	4b08      	ldr	r3, [pc, #32]	; (8001bbc <MX_USART2_UART_Init+0x4c>)

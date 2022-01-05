@@ -20,8 +20,8 @@ void sendMessage(char *messageToSend){
 	char * message = malloc(messageLen);
 	strcpy(message, messageToSend);
 	strcat(message, messageEnding);
-	HAL_UART_Transmit(&huart2, (uint8_t*)message, messageLen, HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart1, (uint8_t*)message, messageLen, HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t*)message, messageLen, HAL_MAX_DELAY);	// communication with second microcontroller
+	HAL_UART_Transmit(&huart2, (uint8_t*)message, messageLen, HAL_MAX_DELAY);	// for debugging purposes
 
 	free(message);
 }
